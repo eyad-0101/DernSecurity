@@ -1,6 +1,6 @@
 # Next.js + Clerk Authentication Dashboard
 
-![Project Banner](https://via.placeholder.com/1200x400.png?text=Next.js+%2B+Clerk+Authentication+Dashboard) <!-- Add a banner image if available -->
+![Project Banner](https://via.placeholder.com/1200x400.png?text=Next.js+%2B+Clerk+Authentication+Dashboard)  
 
 A modern and responsive web application built with **Next.js** and **Clerk** for authentication. This project demonstrates how to implement role-based access control (RBAC) and dynamic navigation based on user roles (admin or user).
 
@@ -40,55 +40,61 @@ Before you begin, ensure you have the following installed:
    ```bash
    git clone https://github.com/your-username/nextjs-clerk-dashboard.git
    cd nextjs-clerk-dashboard
-Install dependencies:
+   ```
 
-bash
-Copy
-npm install
-# or
-yarn install
-Set up environment variables:
+2. **Install dependencies**:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-Create a .env.local file in the root directory.
+3. **Set up environment variables**:
 
-Add your Clerk credentials:
+   - Create a `.env.local` file in the root directory.
+   - Add your Clerk credentials:
 
-env
-Copy
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
-CLERK_SECRET_KEY=your-clerk-secret-key
-Run the development server:
+   ```env
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+   CLERK_SECRET_KEY=your-clerk-secret-key
+   ```
 
-bash
-Copy
-npm run dev
-# or
-yarn dev
-Open your browser:
-Visit http://localhost:3000 to view the application.
+4. **Run the development server**:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-🛠️ Usage
-Role-Based Navigation
-Admin Users:
+5. **Open your browser**:  
+   Visit [http://localhost:3000](http://localhost:3000) to view the application.
 
-Log in as an admin to access the /admin dashboard.
+---
 
-The navigation bar will display an "Admin Dashboard" button.
+## 🛠️ Usage
 
-Regular Users:
+### Role-Based Navigation
 
-Log in as a regular user to access the /user dashboard.
+#### Admin Users:
 
-The navigation bar will display a "User Dashboard" button.
+- Log in as an admin to access the `/admin` dashboard.
+- The navigation bar will display an "Admin Dashboard" button.
 
-Authentication
-Sign up or log in using the Clerk authentication modal.
+#### Regular Users:
 
-Users are automatically redirected to their respective dashboards based on their role.
+- Log in as a regular user to access the `/user` dashboard.
+- The navigation bar will display a "User Dashboard" button.
 
-📂 Project Structure
-plaintext
-Copy
+### Authentication
+
+- Sign up or log in using the Clerk authentication modal.
+- Users are automatically redirected to their respective dashboards based on their role.
+
+---
+
+## 📂 Project Structure
+
+```
 nextjs-clerk-dashboard/
 ├── app/
 │   ├── layout.js          # Root layout (Server Component)
@@ -100,38 +106,49 @@ nextjs-clerk-dashboard/
 ├── .env.local             # Environment variables
 ├── package.json           # Project dependencies
 └── README.md              # Project documentation
+```
 
-🛡️ Role-Based Access Control (RBAC)
-Admin Role:
+---
 
-Admins have access to the /admin dashboard.
+## 🛡️ Role-Based Access Control (RBAC)
 
-Admins can view and manage all user data.
+### Admin Role:
 
-User Role:
+- Admins have access to the `/admin` dashboard.
+- Admins can view and manage all user data.
 
-Regular users have access to the /user dashboard.
+### User Role:
 
-Users can view their personal data.
+- Regular users have access to the `/user` dashboard.
+- Users can view their personal data.
 
-🎨 Styling
-This project uses Tailwind CSS for styling. You can customize the design by editing the Tailwind configuration file (tailwind.config.js).
+---
 
-📄 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## 🎨 Styling
 
-🙏 Acknowledgments
-Clerk for authentication.
+This project uses **Tailwind CSS** for styling. You can customize the design by editing the `tailwind.config.js` file.
 
-Next.js for the framework.
+---
 
-Tailwind CSS for styling.
+## 📄 License
 
-📧 Contact
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Clerk** for authentication.
+- **Next.js** for the framework.
+- **Tailwind CSS** for styling.
+
+---
+
+## 📧 Contact
+
 For questions or feedback, feel free to reach out:
 
-Your Name - eyadw9313@gmail.com
+- **Your Name** - eyadw9313@gmail.com
+- **GitHub** - [eyad0101](https://github.com/eyad0101)
 
-GitHub - eyad0101
-
-Made with ❤️ by Eyad wael
+Made with ❤️ by **Eyad Wael**
