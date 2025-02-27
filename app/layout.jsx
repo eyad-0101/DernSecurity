@@ -4,7 +4,10 @@ import Nav from "@components/Nav";
 import ClientWrapper from "./ClientWrapper.jsx";
 
 import "@styles/globals.css";
-
+export const metadata = {
+  title: "Dern security",
+  description:"an excellent security company that promises it best services just for you"
+};
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">

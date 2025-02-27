@@ -1,7 +1,5 @@
 # Next.js + Clerk Authentication Dashboard
 
-![Project Banner](https://via.placeholder.com/1200x400.png?text=Next.js+%2B+Clerk+Authentication+Dashboard)  
-
 A modern and responsive web application built with **Next.js** and **Clerk** for authentication. This project demonstrates how to implement role-based access control (RBAC) and dynamic navigation based on user roles (admin or user).
 
 ---

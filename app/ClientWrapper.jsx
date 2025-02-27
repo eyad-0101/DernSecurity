@@ -17,7 +17,7 @@ const ClientWrapper = ({ children }) => {
         router.push("/user"); // Redirect to user page
       }
     }
-  }, [user, router]);
+  }, []);
 
   return <>{children}</>;
 };

@@ -20,7 +20,7 @@ const Nav = () => {
     }
   };
   return (
-    <nav className="bg-gray-800 dark:bg-gray-800 w-full shadow-md fixed top-0 z-50">
+    <nav className="bg-gray-800 dark:bg-gray-800 w-full h-16 shadow-md fixed top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -59,7 +59,7 @@ const Nav = () => {
                 Contact
               </Link>
             </li>
-            <li>
+            <li className="flex justify-center">
               <button
                 onClick={handleAdminButtonClick}
                 className="text-white hover:text-gray-300"
