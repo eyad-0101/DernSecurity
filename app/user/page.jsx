@@ -30,6 +30,24 @@ const UserDashboard = () => {
 
     fetchRequests();
   }, []);
+  
+  const deleteRequest = async (id) => {
+    try {
+      const response = await fetch(`/api/userRequests/${id}`, { method: "DELETE" });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete request. Status: ${response.status}`);
+      }
+
+      // Remove from state
+      setRequests((prevRequests) =>
+        prevRequests.filter((request) => request._id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting request:", error);
+      setError(error.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 pt-16 px-4">
@@ -57,6 +75,9 @@ const UserDashboard = () => {
                 </th>
                 <th className="px-6 py-4 text-left text-gray-300 uppercase">
                   Status
+                </th>
+                <th className="px-6 py-4 text-left text-gray-300 uppercase">
+                  action
                 </th>
               </tr>
             </thead>
@@ -88,6 +109,14 @@ const UserDashboard = () => {
                       >
                         {request.status}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 border-b border-gray-700">
+                      <button
+                        onClick={() => deleteRequest(request._id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))

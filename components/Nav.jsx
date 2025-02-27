@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import React from "react";
-import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "@node_modules/next/navigation";
 
 const Nav = () => {
@@ -76,6 +76,11 @@ const Nav = () => {
                     Sign In
                   </button>
                 </SignInButton>
+                <SignUpButton>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                    Sign Up
+                  </button>
+                </SignUpButton>
               </SignedOut>
               <SignedIn>
                 <div className="flex items-center">
