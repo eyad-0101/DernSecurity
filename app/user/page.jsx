@@ -1,30 +1,36 @@
 "use client"; // Ensure this is a Client Component
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for redirection
-import { SignUpButton, useUser } from "@clerk/nextjs"; // Import useUser from Clerk
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs"; // Use Clerk authentication
 
 const UserDashboard = () => {
-  const { isLoaded, isSignedIn, user } = useUser(); // Get user state from Clerk
-  const router = useRouter(); // Initialize useRouter
+  const { isLoaded, isSignedIn, user } = useUser();
+  const router = useRouter();
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState(null);
+  const [role, setRole] = useState(null); // Store user role
 
   useEffect(() => {
-    if (!isLoaded) return; // Ensure the user data is loaded
+    if (!isLoaded) return; // Don't proceed until Clerk has loaded
 
     if (!isSignedIn) {
       router.push("/"); // Redirect if not signed in
       return;
     }
 
-    const role = user?.publicMetadata?.role;
-    if (role !== "user") {
-      router.push("/"); // Redirect if not a "user"
+    // Extract role safely
+    const userRole = user?.publicMetadata?.role;
+    if (!userRole) return; // Ensure role is available
+
+    setRole(userRole); // Store role in state
+
+    if (userRole !== "user") {
+      router.push("/"); // Redirect non-users
       return;
     }
 
-    fetchRequests(); // Fetch requests only for valid users
+    fetchRequests(); // Fetch requests only if user has correct role
   }, [isLoaded, isSignedIn, user, router]);
 
   const fetchRequests = async () => {
@@ -67,6 +73,10 @@ const UserDashboard = () => {
       setError(error.message);
     }
   };
+
+  if (!isLoaded || !isSignedIn || role !== "user") {
+    return null; // Prevent rendering if user isn't ready or isn't authorized
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 pt-16 px-4">
