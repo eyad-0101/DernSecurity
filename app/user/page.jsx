@@ -9,23 +9,23 @@ const UserDashboard = () => {
   const router = useRouter(); // Initialize useRouter
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState(null);
-  const [showSignInPopup, setShowSignInPopup] = useState(false); // State for the sign-in popup
 
   useEffect(() => {
-    if (isLoaded) {
-      if (isSignedIn) {
-        const role = user?.publicMetadata?.role;
-        if (role === "user") {
-          setShowSignInPopup(false); // Hide popup if the role is "user"
-          fetchRequests(); // Fetch requests for a valid user
-        } else {
-          setShowSignInPopup(true); // Show popup for invalid roles
-        }
-      } else {
-        setShowSignInPopup(true); // Show popup if not signed in
-      }
+    if (!isLoaded) return; // Ensure the user data is loaded
+
+    if (!isSignedIn) {
+      router.push("/"); // Redirect if not signed in
+      return;
     }
-  }, [isLoaded, isSignedIn, user]);
+
+    const role = user?.publicMetadata?.role;
+    if (role !== "user") {
+      router.push("/"); // Redirect if not a "user"
+      return;
+    }
+
+    fetchRequests(); // Fetch requests only for valid users
+  }, [isLoaded, isSignedIn, user, router]);
 
   const fetchRequests = async () => {
     try {
@@ -68,40 +68,11 @@ const UserDashboard = () => {
     }
   };
 
-  const handleClosePopup = () => {
-    setShowSignInPopup(false); // Close the sign-in popup
-    router.push("/"); // Redirect to home page
-  };
-
   return (
     <div className="min-h-screen bg-gray-900 pt-16 px-4">
       <h1 className="text-4xl font-extrabold text-white text-center mb-8">
         Your Requests
       </h1>
-
-      {showSignInPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Sign In Required
-            </h2>
-            <p className="text-gray-600 mb-4">
-              You need to sign in to access your requests.
-            </p>
-            <SignUpButton>
-              <button className="bg-blue-500 text-white px-4 mx-2 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                Sign Up
-              </button>
-            </SignUpButton>
-            <button
-              onClick={handleClosePopup}
-              className="mt-4 text-gray-600 underline"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
 
       {error ? (
         <p className="text-red-500 text-center text-lg font-semibold p-4 bg-gray-800 rounded-lg">
