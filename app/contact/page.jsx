@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { useState } from "react";
 
 const ContactUs = () => {
@@ -42,7 +43,7 @@ const ContactUs = () => {
     setSubmitMessage("");
 
     try {
-      const response = await fetch("/api/userRequests.js", {
+      const response = await fetch("/api/userRequests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +52,8 @@ const ContactUs = () => {
       });
 
       if (response.ok) {
-        setSubmitMessage("Request submitted successfully!");
+        const data = await response.json();
+        setSubmitMessage(data.message);
         setFormData({
           name: "",
           email: "",
@@ -62,7 +64,10 @@ const ContactUs = () => {
         });
         setErrors({});
       } else {
-        setSubmitMessage("Failed to submit request. Please try again.");
+        const data = await response.json();
+        setSubmitMessage(
+          data.message || "Failed to submit request. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error submitting request:", error);
@@ -90,7 +95,9 @@ const ContactUs = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 pt-16">
-      <h1 className="text-3xl font-bold text-white text-center mb-8">Contact Us</h1>
+      <h1 className="text-3xl font-bold text-white text-center mb-8">
+        Contact Us
+      </h1>
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
         {/* Name Field */}
         <div className="mb-6">
