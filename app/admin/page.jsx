@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SignUpButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 
 const AdminDashboard = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -11,18 +11,16 @@ const AdminDashboard = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showSignInPopup, setShowSignInPopup] = useState(false);
 
-useEffect(() => {
-  if (isLoaded) {
-    if (!isSignedIn || user?.publicMetadata?.role !== "admin") {
-      setShowSignInPopup(true);
-    } else {
-      fetchRequests();
+  useEffect(() => {
+    if (isLoaded) {
+      if (!isSignedIn || user?.publicMetadata?.role !== "admin") {
+        router.push("/"); // Redirect non-admin users to home
+      } else {
+        fetchRequests();
+      }
     }
-  }
-}, [isLoaded, isSignedIn, user]);
-
+  }, [isLoaded, isSignedIn, user, router]);
 
   const fetchRequests = async () => {
     try {
@@ -56,49 +54,21 @@ useEffect(() => {
     }
   };
 
-  const handleClosePopup = () => {
-    setShowSignInPopup(false);
-    router.push("/");
-  };
-
   if (loading)
     return (
-      <div className="min-h-screen bg-gray-900 flex justify-center items-center text-white">
+      <div className="min-h-screen flex items-center justify-center text-white">
         Loading...
       </div>
     );
   if (error)
     return (
-      <div className="min-h-screen bg-gray-900 flex justify-center items-center text-red-500">
+      <div className="min-h-screen flex items-center justify-center text-red-500">
         Error: {error}
       </div>
     );
 
   return (
     <div className="min-h-screen bg-gray-900 pt-16 text-center px-4">
-      {showSignInPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Admin Access Required
-            </h2>
-            <p className="text-gray-600 mb-4">
-              Only admins can access this page.
-            </p>
-            <SignUpButton>
-              <button className="bg-blue-500 text-white px-4 mx-2 py-2 rounded-lg hover:bg-blue-600">
-                Sign Up
-              </button>
-            </SignUpButton>
-            <button
-              onClick={handleClosePopup}
-              className="mt-4 text-gray-600 underline"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
       <h1 className="text-3xl font-bold text-white mb-8">Admin Dashboard</h1>
       <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-center">
         <input
@@ -132,12 +102,13 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>
-            {requests.filter(
-              (r) =>
-                (filterStatus === "All" || r.status === filterStatus) &&
-                r.name.toLowerCase().includes(searchQuery.toLowerCase())
-            ).length > 0 ? (
-              requests.map((request) => (
+            {requests
+              .filter(
+                (r) =>
+                  (filterStatus === "All" || r.status === filterStatus) &&
+                  r.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((request) => (
                 <tr key={request._id} className="hover:bg-gray-700">
                   <td>{request.name}</td>
                   <td>{request.email}</td>
@@ -170,14 +141,7 @@ useEffect(() => {
                     </select>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="text-center py-4">
-                  No requests found.
-                </td>
-              </tr>
-            )}
+              ))}
           </tbody>
         </table>
       </div>
