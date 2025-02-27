@@ -1,8 +1,24 @@
+"use client"
 import Link from "next/link";
 import React from "react";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { useRouter } from "@node_modules/next/navigation";
 
 const Nav = () => {
+  const { user } = useUser();
+  const router = useRouter();
+
+  // Check if the user is an admin
+  const isAdmin = user?.publicMetadata?.role === "admin";
+
+  // Handle Admin button click
+  const handleAdminButtonClick = () => {
+    if (isAdmin) {
+      router.push("/admin"); // Redirect to admin page
+    } else {
+      router.push("/user"); // Redirect to user page
+    }
+  };
   return (
     <nav className="bg-gray-800 dark:bg-gray-800 w-full shadow-md fixed top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,6 +58,14 @@ const Nav = () => {
               >
                 Contact
               </Link>
+            </li>
+            <li>
+              <button
+                onClick={handleAdminButtonClick}
+                className="text-white hover:text-gray-300"
+              >
+                {isAdmin ? "Admin Dashboard" : "User Dashboard"}
+              </button>
             </li>
 
             {/* Clerk Authentication */}

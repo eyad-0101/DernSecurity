@@ -1,10 +1,13 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useUser } from "@clerk/nextjs";
+// ClientWrapper.jsx (Client Component)
+"use client";
 
-const useRoleRedirect = () => {
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation"; // Updated import
+import { useEffect } from "react";
+
+const ClientWrapper = ({ children }) => {
   const { user } = useUser();
-  const router = useRouter();
+  const router = useRouter(); // Updated hook
 
   useEffect(() => {
     if (user) {
@@ -15,6 +18,8 @@ const useRoleRedirect = () => {
       }
     }
   }, [user, router]);
+
+  return <>{children}</>;
 };
 
-export default useRoleRedirect;
+export default ClientWrapper;
