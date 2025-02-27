@@ -4,18 +4,21 @@ import { ObjectId } from "mongodb";
 
 export async function PUT(request, { params }) {
   try {
-    // Check if params.id is provided
-    if (!params?.id) {
+    // Await params to ensure it's resolved
+    const { id } = await params;
+
+    // Check if id is provided
+    if (!id) {
       return NextResponse.json(
         { error: "Request ID is required." },
         { status: 400 }
       );
     }
 
-    const id = params.id.trim();
+    const trimmedId = id.trim();
 
     // Validate the ObjectId format
-    if (!ObjectId.isValid(id)) {
+    if (!ObjectId.isValid(trimmedId)) {
       return NextResponse.json(
         { error: "Invalid request ID format." },
         { status: 400 }
@@ -33,12 +36,12 @@ export async function PUT(request, { params }) {
 
     // Connect to the database
     const client = await clientPromise;
-    const db = client.db("your_database_name"); // Replace with your actual DB name
+    const db = client.db("requests"); // Replace with your actual DB name
     const collection = db.collection("requests");
 
     // Update the request status
     const result = await collection.updateOne(
-      { _id: new ObjectId(id) },
+      { _id: new ObjectId(trimmedId) },
       { $set: { status } }
     );
 
