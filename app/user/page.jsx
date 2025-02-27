@@ -12,16 +12,18 @@ const UserDashboard = () => {
   const [showSignInPopup, setShowSignInPopup] = useState(false); // State for the sign-in popup
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      // Check if the user is a regular user
-      const role = user?.publicMetadata?.role; // Assuming role is stored in publicMetadata
-      if (role !== "user") {
-        setShowSignInPopup(true); // Show popup if not a regular user
+    if (isLoaded) {
+      if (isSignedIn) {
+        const role = user?.publicMetadata?.role;
+        if (role === "user") {
+          setShowSignInPopup(false); // Hide popup if the role is "user"
+          fetchRequests(); // Fetch requests for a valid user
+        } else {
+          setShowSignInPopup(true); // Show popup for invalid roles
+        }
       } else {
-        fetchRequests(); // Fetch requests if the user is signed in and is a regular user
+        setShowSignInPopup(true); // Show popup if not signed in
       }
-    } else if (isLoaded && !isSignedIn) {
-      setShowSignInPopup(true); // Show popup if not signed in
     }
   }, [isLoaded, isSignedIn, user]);
 
