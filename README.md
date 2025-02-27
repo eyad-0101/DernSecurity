@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js + Clerk Authentication Dashboard
 
-## Getting Started
+![Project Banner](https://via.placeholder.com/1200x400.png?text=Next.js+%2B+Clerk+Authentication+Dashboard) <!-- Add a banner image if available -->
 
-First, run the development server:
+A modern and responsive web application built with **Next.js** and **Clerk** for authentication. This project demonstrates how to implement role-based access control (RBAC) and dynamic navigation based on user roles (admin or user).
 
-```bash
+---
+
+## ✨ Features
+
+- **Role-Based Access Control (RBAC)**:
+  - Admins are redirected to the `/admin` dashboard.
+  - Regular users are redirected to the `/user` dashboard.
+
+- **Dynamic Navigation**:
+  - The navigation bar dynamically updates based on the user's role.
+  - Admin button redirects to the appropriate dashboard (`/admin` or `/user`).
+
+- **Authentication**:
+  - Seamless authentication using **Clerk**.
+  - Protected routes based on user roles.
+
+- **Responsive Design**:
+  - Built with **Tailwind CSS** for a modern and responsive UI.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/nextjs-clerk-dashboard.git
+   cd nextjs-clerk-dashboard
+Install dependencies:
+
+bash
+Copy
+npm install
+# or
+yarn install
+Set up environment variables:
+
+Create a .env.local file in the root directory.
+
+Add your Clerk credentials:
+
+env
+Copy
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+CLERK_SECRET_KEY=your-clerk-secret-key
+Run the development server:
+
+bash
+Copy
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Open your browser:
+Visit http://localhost:3000 to view the application.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🛠️ Usage
+Role-Based Navigation
+Admin Users:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Log in as an admin to access the /admin dashboard.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The navigation bar will display an "Admin Dashboard" button.
 
-## Learn More
+Regular Users:
 
-To learn more about Next.js, take a look at the following resources:
+Log in as a regular user to access the /user dashboard.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The navigation bar will display a "User Dashboard" button.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Authentication
+Sign up or log in using the Clerk authentication modal.
 
-## Deploy on Vercel
+Users are automatically redirected to their respective dashboards based on their role.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+📂 Project Structure
+plaintext
+Copy
+nextjs-clerk-dashboard/
+├── app/
+│   ├── layout.js          # Root layout (Server Component)
+│   ├── ClientWrapper.jsx  # Client-side logic for role-based redirects
+├── components/
+│   ├── Nav.jsx            # Navigation bar (Client Component)
+├── styles/
+│   ├── globals.css        # Global styles
+├── .env.local             # Environment variables
+├── package.json           # Project dependencies
+└── README.md              # Project documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🛡️ Role-Based Access Control (RBAC)
+Admin Role:
+
+Admins have access to the /admin dashboard.
+
+Admins can view and manage all user data.
+
+User Role:
+
+Regular users have access to the /user dashboard.
+
+Users can view their personal data.
+
+🎨 Styling
+This project uses Tailwind CSS for styling. You can customize the design by editing the Tailwind configuration file (tailwind.config.js).
+
+📄 License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+🙏 Acknowledgments
+Clerk for authentication.
+
+Next.js for the framework.
+
+Tailwind CSS for styling.
+
+📧 Contact
+For questions or feedback, feel free to reach out:
+
+Your Name - eyadw9313@gmail.com
+
+GitHub - eyad0101
+
+Made with ❤️ by Eyad wael
