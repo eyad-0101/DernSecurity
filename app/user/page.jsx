@@ -1,47 +1,39 @@
-"use client"; // Ensure this is a Client Component
+"use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for redirection
-import { SignUpButton, useUser } from "@clerk/nextjs"; // Import useUser from Clerk
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 const UserDashboard = () => {
-  const { isLoaded, isSignedIn, user } = useUser(); // Get user state from Clerk
-  const router = useRouter(); // Initialize useRouter
+  const { isLoaded, isSignedIn, user } = useUser();
+  const router = useRouter();
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState(null);
-  const [showSignInPopup, setShowSignInPopup] = useState(false); // State for the sign-in popup
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      // Check if the user is a regular user
-      const role = user?.publicMetadata?.role; // Assuming role is stored in publicMetadata
-      if (role !== "user") {
-        setShowSignInPopup(true); // Show popup if not a regular user
-      } else {
-        fetchRequests(); // Fetch requests if the user is signed in and is a regular user
-      }
-    } else if (isLoaded && !isSignedIn) {
-      setShowSignInPopup(true); // Show popup if not signed in
+    if (!isLoaded) return; // Wait until Clerk is fully loaded
+
+    if (!isSignedIn) {
+      router.push("/sign-in"); // Redirect to sign-in if not authenticated
+      return;
     }
-  }, [isLoaded, isSignedIn, user]);
+
+    if (user?.publicMetadata?.role === "user") {
+      fetchRequests();
+    }
+  }, [isLoaded, isSignedIn, user, router]);
 
   const fetchRequests = async () => {
     try {
       const response = await fetch("/api/userRequests");
-
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      const data = await response.json();
 
-      const text = await response.text();
-      if (!text) {
-        throw new Error("Empty response from server");
-      }
-
-      const data = JSON.parse(text);
-      setRequests(data);
+      // Filter requests based on the logged-in user
+      const userRequests = data.filter((request) => request.userId === user.id);
+      setRequests(userRequests);
     } catch (error) {
-      console.error("Error fetching requests:", error);
       setError(error.message);
     }
   };
@@ -51,56 +43,24 @@ const UserDashboard = () => {
       const response = await fetch(`/api/userRequests/${id}`, {
         method: "DELETE",
       });
-
-      if (!response.ok) {
-        throw new Error(`Failed to delete request. Status: ${response.status}`);
-      }
-
-      // Remove from state
+      if (!response.ok) throw new Error("Failed to delete request.");
       setRequests((prevRequests) =>
         prevRequests.filter((request) => request._id !== id)
       );
     } catch (error) {
-      console.error("Error deleting request:", error);
       setError(error.message);
     }
   };
 
-  const handleClosePopup = () => {
-    setShowSignInPopup(false); // Close the sign-in popup
-    router.push("/"); // Redirect to home page
-  };
+  if (!isLoaded) {
+    return <div className="text-white text-center mt-10">Loading...</div>; // Ensure proper loading state
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 pt-16 px-4">
       <h1 className="text-4xl font-extrabold text-white text-center mb-8">
         Your Requests
       </h1>
-
-      {showSignInPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Sign In Required
-            </h2>
-            <p className="text-gray-600 mb-4">
-              You need to sign in to access your requests.
-            </p>
-            <SignUpButton>
-              <button className="bg-blue-500 text-white px-4 mx-2 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                Sign Up
-              </button>
-            </SignUpButton>
-            <button
-              onClick={handleClosePopup}
-              className="mt-4 text-gray-600 underline"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
       {error ? (
         <p className="text-red-500 text-center text-lg font-semibold p-4 bg-gray-800 rounded-lg">
           {error}
@@ -132,7 +92,7 @@ const UserDashboard = () => {
                 requests.map((request) => (
                   <tr
                     key={request._id}
-                    className="border-b border-gray-700 hover:bg-gray-800 transition duration-300"
+                    className="border-b border-gray-700 hover:bg-gray-800 transition"
                   >
                     <td className="px-6 py-4 text-gray-300">
                       {request.pcType}
